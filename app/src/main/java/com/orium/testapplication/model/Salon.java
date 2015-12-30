@@ -3,6 +3,8 @@ package com.orium.testapplication.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Salon {
 
@@ -32,7 +34,8 @@ public class Salon {
         return image;
     }
 
-    public void setImage(final String image) {
-        this.image = image;
+    @JsonProperty("profile_image_urls")
+    public void setImage(Map<String, Object> foo) {
+        this.image = String.valueOf(foo.get("original"));
     }
 }

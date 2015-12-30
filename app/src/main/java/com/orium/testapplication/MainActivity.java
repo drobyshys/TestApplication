@@ -2,6 +2,7 @@ package com.orium.testapplication;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,8 @@ import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Call<SalonsResponse> mSalonsCall;
+    public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
+    
     private TestWebApi mService;
 
     @Bind(android.R.id.list)
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.swipeLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    private RetainedFragment<List<Salon>> dataFragment;
+
+    private Call<SalonsResponse> mSalonsCall;
     private List<Salon> mSalonItems = new ArrayList<>();
     private SalonAdapter mAdapter;
 
@@ -45,7 +50,25 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mService = ApiClient.getClient();
+
+        restoreRetainedData();
+
         initUI();
+    }
+
+
+
+    private void restoreRetainedData() {
+        FragmentManager fm = getSupportFragmentManager();
+        dataFragment = (RetainedFragment<List<Salon>>) fm.findFragmentByTag(RETAIN_FRAGMENT_TAG);
+
+        if (dataFragment == null) {
+            dataFragment = new RetainedFragment<>();
+            fm.beginTransaction().add(dataFragment, RETAIN_FRAGMENT_TAG).commit();
+            dataFragment.setData(mSalonItems);
+        } else {
+            mSalonItems = dataFragment.getData();
+        }
     }
 
     private void initUI() {

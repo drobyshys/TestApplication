@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.orium.testapplication.model.Salon;
 import com.orium.testapplication.model.SalonsResponse;
+import com.orium.testapplication.network.ApiClient;
 import com.orium.testapplication.network.TestWebApi;
 
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.JacksonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -44,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://staging.salony.com")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-        mService = retrofit.create(TestWebApi.class);
-
+        mService = ApiClient.getClient();
         initUI();
     }
 
@@ -90,11 +85,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Response<SalonsResponse> response, final Retrofit retrofit) {
                 SalonsResponse data = response.body();
-                if (data != null && data.getSalons() != null) {
-                    List<Salon> salons = data.getSalons();
-                    mSalonItems.clear();
-                    mSalonItems.addAll(salons);
-                    mAdapter.notifyDataSetChanged();
+                if (data != null) {
+                    updateList(data.getSalons());
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -105,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateList(final List<Salon> salons) {
+        if (salons != null) {
+            mSalonItems.clear();
+            mSalonItems.addAll(salons);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

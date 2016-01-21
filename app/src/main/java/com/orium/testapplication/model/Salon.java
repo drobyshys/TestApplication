@@ -1,41 +1,35 @@
 package com.orium.testapplication.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.Map;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Salon {
 
-    @JsonProperty("name")
-    private String mName;
-    @JsonProperty("website")
-    private String mWebsite;
-    private String image;
+    private String name;
+    private String website;
+    @SerializedName("profile_image_urls")
+    private ProfileImageUrls image;
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(final String name) {
-        this.mName = name;
+        this.name = name;
     }
 
     public String getWebsite() {
-        return mWebsite;
+        return website;
     }
 
     public void setWebsite(final String website) {
-        this.mWebsite = website;
+        this.website = website;
     }
 
     public String getImage() {
-        return image;
+        return image.original;
     }
 
-    @JsonProperty("profile_image_urls")
-    public void setImage(Map<String, Object> foo) {
-        this.image = String.valueOf(foo.get("original"));
+    static class ProfileImageUrls {
+        String original;
     }
 }

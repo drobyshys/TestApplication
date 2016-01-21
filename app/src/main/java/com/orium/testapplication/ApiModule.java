@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.JacksonConverterFactory;
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 @Module(
@@ -24,7 +24,7 @@ public class ApiModule {
         return new Retrofit.Builder()
                 .client(new OkHttpClient())
                 .baseUrl(BASE_URL)
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 

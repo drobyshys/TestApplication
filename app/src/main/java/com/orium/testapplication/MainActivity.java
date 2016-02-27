@@ -12,11 +12,12 @@ import android.widget.Toast;
 
 import com.orium.testapplication.model.Salon;
 import com.orium.testapplication.model.SalonsResponse;
-import com.orium.testapplication.network.ApiClient;
 import com.orium.testapplication.network.TestWebApi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
     
-    private TestWebApi mService;
+    @Inject TestWebApi mService;
 
     @Bind(android.R.id.list)
     RecyclerView mRecyclerView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private RetainedFragment<List<Salon>> dataFragment;
 
     private Call<SalonsResponse> mSalonsCall;
+    
     private List<Salon> mSalonItems = new ArrayList<>();
     private SalonAdapter mAdapter;
 
@@ -49,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mService = ApiClient.getClient();
-
         restoreRetainedData();
+
+        App.getObjectGraph().inject(this);
 
         initUI();
     }

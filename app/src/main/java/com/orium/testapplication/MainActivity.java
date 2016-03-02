@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(final Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
+                t.printStackTrace();
                 Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

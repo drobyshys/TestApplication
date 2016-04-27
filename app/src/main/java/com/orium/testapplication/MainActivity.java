@@ -21,10 +21,9 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,15 +49,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        App.getComponent().inject(this);
 
         restoreRetainedData();
 
-        App.getObjectGraph().inject(this);
-
         initUI();
     }
-
-
 
     private void restoreRetainedData() {
         FragmentManager fm = getSupportFragmentManager();
@@ -108,16 +104,22 @@ public class MainActivity extends AppCompatActivity {
         mSalonsCall = mService.getSalons();
         mSalonsCall.enqueue(new Callback<SalonsResponse>() {
             @Override
-            public void onResponse(final Response<SalonsResponse> response, final Retrofit retrofit) {
+            public void onResponse(final Call<SalonsResponse> call, final Response<SalonsResponse> response) {
                 SalonsResponse data = response.body();
                 if (data != null) {
                     updateList(data.getSalons());
+                    mRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.smoothScrollToPosition(8);
+                        }
+                    });
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(final Throwable t) {
+            public void onFailure(final Call<SalonsResponse> call, final Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

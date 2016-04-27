@@ -1,23 +1,19 @@
 package com.orium.testapplication;
 
 import com.orium.testapplication.network.TestWebApi;
-import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Retrofit;
 
-@Module(
-        injects = {
-                MainActivity.class
-        }
-)
+@Module
 public class ApiModule {
 
-    public static final String BASE_URL = "http://staging.salony.com";
+    public static final String BASE_URL = "http://staging2.salony.com";
 
     @Provides @Singleton
     Retrofit provideRetrofit() {

@@ -2,20 +2,29 @@ package com.orium.testapplication;
 
 import android.app.Application;
 
-import dagger.ObjectGraph;
+import javax.inject.Singleton;
+
+import dagger.Component;
 
 public class App extends Application {
 
-    private static ObjectGraph objectGraph;
+    private static ApplicationComponent component;
+
+    @Singleton @Component(modules = ApiModule.class)
+    public interface ApplicationComponent {
+        void inject(MainActivity homeActivity);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        objectGraph = ObjectGraph.create(new ApiModule());
+        component = DaggerApp_ApplicationComponent.builder()
+                .apiModule(new ApiModule())
+                .build();
     }
 
-    public static ObjectGraph getObjectGraph() {
-        return objectGraph;
+    public static ApplicationComponent getComponent() {
+        return component;
     }
 }

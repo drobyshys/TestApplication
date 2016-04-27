@@ -8,29 +8,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.orium.testapplication.model.Salon;
+import com.orium.testapplication.model.Item;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.Holder> {
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
-    private List<Salon> mData;
+    private List<Item> mData;
 
-    public SalonAdapter(List<Salon> data) {
+    public ItemsAdapter(List<Item> data) {
         mData = data;
     }
 
     @Override
-    public SalonAdapter.Holder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public ItemsAdapter.Holder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_salon, parent, false);
         return new Holder(view);
     }
 
     @Override
-    public void onBindViewHolder(final SalonAdapter.Holder holder, final int position) {
+    public void onBindViewHolder(final ItemsAdapter.Holder holder, final int position) {
         holder.bind(mData.get(position));
     }
 
@@ -43,7 +43,7 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.Holder> {
 
         @Bind(R.id.tv_name)
         TextView tvName;
-        @Bind(R.id.tv_website)
+        @Bind(R.id.tv_desc)
         TextView tvWebsite;
         @Bind(R.id.iv_logo)
         ImageView ivImage;
@@ -53,12 +53,12 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.Holder> {
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Salon salon) {
-            tvName.setText(salon.getName());
-            tvWebsite.setText(salon.getWebsite());
+        public void bind(final Item item) {
+            tvName.setText(item.getName());
+            tvWebsite.setText(item.getDescription());
 
             Glide.with(ivImage.getContext())
-                    .load(salon.getImage())
+                    .load(item.getImage())
                     .placeholder(R.mipmap.placeholder)
                     .crossFade()
                     .into(ivImage);

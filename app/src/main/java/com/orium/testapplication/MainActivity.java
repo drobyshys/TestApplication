@@ -10,8 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.widget.Toast;
 
-import com.orium.testapplication.model.Salon;
-import com.orium.testapplication.model.SalonsResponse;
+import com.orium.testapplication.model.Item;
 import com.orium.testapplication.network.TestWebApi;
 
 import java.util.ArrayList;
@@ -36,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.swipeLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private RetainedFragment<List<Salon>> dataFragment;
+    private RetainedFragment<List<Item>> dataFragment;
 
-    private Call<SalonsResponse> mSalonsCall;
+    private Call<List<Item>> mSalonsCall;
     
-    private List<Salon> mSalonItems = new ArrayList<>();
-    private SalonAdapter mAdapter;
+    private List<Item> mItemItems = new ArrayList<>();
+    private ItemsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void restoreRetainedData() {
         FragmentManager fm = getSupportFragmentManager();
-        dataFragment = (RetainedFragment<List<Salon>>) fm.findFragmentByTag(RETAIN_FRAGMENT_TAG);
+        dataFragment = (RetainedFragment<List<Item>>) fm.findFragmentByTag(RETAIN_FRAGMENT_TAG);
 
         if (dataFragment == null) {
             dataFragment = new RetainedFragment<>();
             fm.beginTransaction().add(dataFragment, RETAIN_FRAGMENT_TAG).commit();
-            dataFragment.setData(mSalonItems);
+            dataFragment.setData(mItemItems);
         } else {
-            mSalonItems = dataFragment.getData();
+            mItemItems = dataFragment.getData();
         }
     }
 
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
-        mAdapter = new SalonAdapter(mSalonItems);
+        mAdapter = new ItemsAdapter(mItemItems);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -94,43 +93,45 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mSalonItems.size() == 0) {
+        if (mItemItems.size() == 0) {
             requestSalons();
         }
     }
 
     private void requestSalons() {
         mSwipeRefreshLayout.setRefreshing(true);
-        mSalonsCall = mService.getSalons();
-        mSalonsCall.enqueue(new Callback<SalonsResponse>() {
+        mSalonsCall = mService.getItems();
+        mSalonsCall.enqueue(new Callback<List<Item>>() {
             @Override
-            public void onResponse(final Call<SalonsResponse> call, final Response<SalonsResponse> response) {
-                SalonsResponse data = response.body();
-                if (data != null) {
-                    updateList(data.getSalons());
-                    mRecyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRecyclerView.smoothScrollToPosition(8);
-                        }
-                    });
+            public void onResponse(final Call<List<Item>> call, final Response<List<Item>> response) {
+                if (response.isSuccessful()) {
+                    List<Item> data = response.body();
+                    if (data != null) {
+                        updateList(data);
+                    }
+                } else {
+                    showErrorToast(response.message());
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(final Call<SalonsResponse> call, final Throwable t) {
+            public void onFailure(final Call<List<Item>> call, final Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 t.printStackTrace();
-                Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                showErrorToast(t.getLocalizedMessage());
             }
         });
     }
 
-    private void updateList(final List<Salon> salons) {
-        if (salons != null) {
-            mSalonItems.clear();
-            mSalonItems.addAll(salons);
+    private void showErrorToast(final String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateList(final List<Item> items) {
+        if (items != null) {
+            mItemItems.clear();
+            mItemItems.addAll(items);
             mAdapter.notifyDataSetChanged();
         }
     }

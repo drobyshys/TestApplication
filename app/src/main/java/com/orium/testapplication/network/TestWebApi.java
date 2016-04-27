@@ -1,13 +1,15 @@
 package com.orium.testapplication.network;
 
-import com.orium.testapplication.model.SalonsResponse;
+import com.orium.testapplication.model.Item;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface TestWebApi {
 
-    @GET("/v1/salons")
-    Call<SalonsResponse> getSalons();
+    @GET("items")
+    Call<List<Item>> getItems();
 
 }

@@ -1,13 +1,13 @@
-package com.orium.testapplication;
+package com.orium.testapplication.network;
 
-import com.orium.testapplication.network.TestWebApi;
+import java.util.List;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,13 +26,12 @@ public class ApiModule {
     }
 
     @Provides @Singleton
-    OkHttpClient provideOkhttpClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
-        return new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
+    OkHttpClient provideOkhttpClient(List<Interceptor> interceptors) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        for (Interceptor i : interceptors) {
+            builder.addInterceptor(i);
+        }
+        return builder.build();
     }
 
     @Provides @Singleton TestWebApi provideApiService(Retrofit retrofit) {

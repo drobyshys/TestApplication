@@ -25,7 +25,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
     @Override
     public ItemsAdapter.Holder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_salon, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         return new Holder(view);
     }
 
@@ -43,8 +43,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
         @Bind(R.id.tv_name)
         TextView tvName;
-        @Bind(R.id.tv_desc)
-        TextView tvWebsite;
         @Bind(R.id.iv_logo)
         ImageView ivImage;
 
@@ -55,11 +53,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
         public void bind(final Item item) {
             tvName.setText(item.getName());
-            tvWebsite.setText(item.getDescription());
 
             Glide.with(ivImage.getContext())
                     .load(item.getImage())
-                    .placeholder(R.mipmap.placeholder)
+                    .placeholder(R.mipmap.placeholder).centerCrop()
                     .crossFade()
                     .into(ivImage);
         }

@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mSwipeRefreshLayout.setProgressViewOffset(false, 0,
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 24,

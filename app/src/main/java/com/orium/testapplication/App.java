@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.orium.testapplication.network.ApiModule;
 import com.orium.testapplication.network.HostSelectionInterceptor;
 import com.orium.testapplication.network.OkHttpInterceptorsModule;
+import com.orium.testapplication.ui.items.ItemsActivity;
 
 import javax.inject.Singleton;
 
@@ -22,7 +23,7 @@ public class App extends Application {
             ApiModule.class, OkHttpInterceptorsModule.class
     })
     public interface ApplicationComponent {
-        void inject(MainActivity homeActivity);
+        void inject(ItemsActivity homeActivity);
 
         @NonNull
         OkHttpClient getOkHttpClient();

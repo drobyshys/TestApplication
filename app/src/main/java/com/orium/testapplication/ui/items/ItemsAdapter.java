@@ -1,4 +1,4 @@
-package com.orium.testapplication;
+package com.orium.testapplication.ui.items;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.orium.testapplication.R;
 import com.orium.testapplication.model.Item;
 
 import java.util.List;
@@ -56,7 +57,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
             Glide.with(ivImage.getContext())
                     .load(item.getImage())
-                    .placeholder(R.mipmap.placeholder).centerCrop()
+//                    .placeholder(R.mipmap.placeholder)
+                    .centerCrop()
                     .crossFade()
                     .into(ivImage);
         }

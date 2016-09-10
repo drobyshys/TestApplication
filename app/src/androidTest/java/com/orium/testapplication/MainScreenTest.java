@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.orium.testapplication.rules.MockWebServerRule;
 import com.orium.testapplication.rules.NeedsMockWebServer;
+import com.orium.testapplication.ui.items.ItemsActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -38,7 +39,7 @@ public class MainScreenTest {
     @Rule
     public RuleChain rules = RuleChain.emptyRuleChain()
             .around(new MockWebServerRule(this))
-            .around(new ActivityTestRule<>(MainActivity.class));
+            .around(new ActivityTestRule<>(ItemsActivity.class));
 
     @Test // For real, it's really easy to break Toolbar, so why not test it?
     public void shouldDisplayTitle() {

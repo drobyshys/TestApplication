@@ -1,4 +1,4 @@
-package com.orium.testapplication;
+package com.orium.testapplication.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

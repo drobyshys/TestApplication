@@ -1,4 +1,4 @@
-package com.orium.testapplication;
+package com.orium.testapplication.ui.items;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.orium.testapplication.App;
+import com.orium.testapplication.R;
+import com.orium.testapplication.ui.RetainedFragment;
+import com.orium.testapplication.ui.SimpleDividerItemDecoration;
 import com.orium.testapplication.model.Item;
 import com.orium.testapplication.network.TestWebApi;
 
@@ -25,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity {
 
     public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
     
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_items);
 
         ButterKnife.bind(this);
         App.getComponent().inject(this);

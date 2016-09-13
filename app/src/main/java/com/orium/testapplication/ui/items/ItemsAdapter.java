@@ -19,15 +19,18 @@ import butterknife.ButterKnife;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
     private List<Item> mData;
+    private final View.OnClickListener mClickListener;
 
-    public ItemsAdapter(List<Item> data) {
+    ItemsAdapter(List<Item> data, View.OnClickListener clickListener) {
         mData = data;
+        mClickListener = clickListener;
+        setHasStableIds(true);
     }
 
     @Override
     public ItemsAdapter.Holder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        return new Holder(view);
+        return new Holder(view, mClickListener);
     }
 
     @Override
@@ -42,14 +45,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
 
     static class Holder extends RecyclerView.ViewHolder {
 
+        private final View.OnClickListener mClickListener;
         @Bind(R.id.tv_name)
         TextView tvName;
         @Bind(R.id.iv_logo)
         ImageView ivImage;
 
-        public Holder(final View itemView) {
+        public Holder(final View itemView, final View.OnClickListener clickListener) {
             super(itemView);
+            mClickListener = clickListener;
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(mClickListener);
         }
 
         public void bind(final Item item) {

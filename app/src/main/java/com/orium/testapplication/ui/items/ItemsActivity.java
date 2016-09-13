@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.Toast;
 
 import com.orium.testapplication.App;
@@ -29,22 +30,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemsActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
     
     @Inject TestWebApi mService;
 
-    @Bind(android.R.id.list)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swipeLayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(android.R.id.list) RecyclerView mRecyclerView;
+    @Bind(R.id.swipeLayout) SwipeRefreshLayout mSwipeRefreshLayout;
 
     private RetainedFragment<List<Item>> dataFragment;
 
     private Call<List<Item>> mSalonsCall;
     
-    private List<Item> mItemItems = new ArrayList<>();
+    private List<Item> mItems = new ArrayList<>();
     private ItemsAdapter mAdapter;
 
     @Override
@@ -67,9 +66,9 @@ public class ItemsActivity extends AppCompatActivity {
         if (dataFragment == null) {
             dataFragment = new RetainedFragment<>();
             fm.beginTransaction().add(dataFragment, RETAIN_FRAGMENT_TAG).commit();
-            dataFragment.setData(mItemItems);
+            dataFragment.setData(mItems);
         } else {
-            mItemItems = dataFragment.getData();
+            mItems = dataFragment.getData();
         }
     }
 
@@ -93,7 +92,7 @@ public class ItemsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
-        mAdapter = new ItemsAdapter(mItemItems);
+        mAdapter = new ItemsAdapter(mItems, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -101,7 +100,7 @@ public class ItemsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mItemItems.size() == 0) {
+        if (mItems.size() == 0) {
             requestSalons();
         }
     }
@@ -138,8 +137,8 @@ public class ItemsActivity extends AppCompatActivity {
 
     private void updateList(final List<Item> items) {
         if (items != null) {
-            mItemItems.clear();
-            mItemItems.addAll(items);
+            mItems.clear();
+            mItems.addAll(items);
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -150,5 +149,11 @@ public class ItemsActivity extends AppCompatActivity {
         if (mSalonsCall != null) {
             mSalonsCall.cancel();
         }
+    }
+
+    @Override
+    public void onClick(final View v) {
+        int index = mRecyclerView.getChildAdapterPosition(v);
+        Toast.makeText(this, String.valueOf(index), Toast.LENGTH_SHORT).show();
     }
 }

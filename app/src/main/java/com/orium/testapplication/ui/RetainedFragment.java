@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 
 public class RetainedFragment<T> extends Fragment {
 
+    public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
+
     private T data;
 
     @Override

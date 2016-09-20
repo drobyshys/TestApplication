@@ -32,8 +32,6 @@ import retrofit2.Response;
 
 public class ItemsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String RETAIN_FRAGMENT_TAG = "fragment_data";
-    
     @Inject TestWebApi mService;
 
     @Bind(android.R.id.list) RecyclerView mRecyclerView;
@@ -61,11 +59,11 @@ public class ItemsActivity extends AppCompatActivity implements View.OnClickList
 
     private void restoreRetainedData() {
         FragmentManager fm = getSupportFragmentManager();
-        dataFragment = (RetainedFragment<List<Item>>) fm.findFragmentByTag(RETAIN_FRAGMENT_TAG);
+        dataFragment = (RetainedFragment<List<Item>>) fm.findFragmentByTag(RetainedFragment.RETAIN_FRAGMENT_TAG);
 
         if (dataFragment == null) {
             dataFragment = new RetainedFragment<>();
-            fm.beginTransaction().add(dataFragment, RETAIN_FRAGMENT_TAG).commit();
+            fm.beginTransaction().add(dataFragment, RetainedFragment.RETAIN_FRAGMENT_TAG).commit();
             dataFragment.setData(mItems);
         } else {
             mItems = dataFragment.getData();

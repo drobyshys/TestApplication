@@ -18,12 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.items.ItemsActivity">
+        <activity android:name=".ui.items.ItemsActivity" android:parentActivityName=".ui.MainActivity">
         </activity>
         <activity
-            android:name=".ui.TempActivity"
+            android:name=".ui.TabsActivity"
             android:label="@string/title_activity_temp"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" android:parentActivityName=".ui.MainActivity">
         </activity>
     </application>
 

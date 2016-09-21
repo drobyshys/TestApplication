@@ -13,7 +13,7 @@ import com.orium.testapplication.model.Item;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
@@ -46,9 +46,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.Holder> {
     static class Holder extends RecyclerView.ViewHolder {
 
         private final View.OnClickListener mClickListener;
-        @Bind(R.id.tv_name)
+        @BindView(R.id.tv_name)
         TextView tvName;
-        @Bind(R.id.iv_logo)
+        @BindView(R.id.iv_logo)
         ImageView ivImage;
 
         public Holder(final View itemView, final View.OnClickListener clickListener) {

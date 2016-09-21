@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +34,8 @@ public class ItemsActivity extends AppCompatActivity implements View.OnClickList
 
     @Inject TestWebApi mService;
 
-    @Bind(android.R.id.list) RecyclerView mRecyclerView;
-    @Bind(R.id.swipeLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(android.R.id.list) RecyclerView mRecyclerView;
+    @BindView(R.id.swipeLayout) SwipeRefreshLayout mSwipeRefreshLayout;
 
     private RetainedFragment<List<Item>> dataFragment;
 
@@ -73,6 +73,9 @@ public class ItemsActivity extends AppCompatActivity implements View.OnClickList
     private void initUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSwipeRefreshLayout.setProgressViewOffset(false, 0,
                 (int) TypedValue.applyDimension(

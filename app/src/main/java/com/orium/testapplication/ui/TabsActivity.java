@@ -88,8 +88,8 @@ public class TabsActivity extends AppCompatActivity {
         @Nullable
         @Override
         public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-            TextView view = (TextView) inflater.inflate(R.layout.fragment_tab, container, false);
-            view.setText("Item: " + getArguments().getInt(ARG_INDEX));
+            View view = inflater.inflate(R.layout.fragment_tab, container, false);
+            ((TextView)view.findViewById(android.R.id.text1)).setText("Item: " + getArguments().getInt(ARG_INDEX));
             return view;
         }
     }
